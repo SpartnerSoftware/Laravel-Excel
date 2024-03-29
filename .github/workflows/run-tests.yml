@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
   tests:
@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.0, 8.1, 8.2, 8.3]
+        php: [8.0, 8.1, 8.2, 8.3]
         laravel: [11, 10, 9, 8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
@@ -85,7 +85,7 @@ jobs:
           - laravel: 5.8
             php: 8.2
           - laravel: 5.8
-            php: 8.3 
+            php: 8.3
 
     name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
