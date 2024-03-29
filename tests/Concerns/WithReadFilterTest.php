@@ -20,7 +20,7 @@ class WithReadFilterTest extends TestCase
             {
                 return new class implements IReadFilter
                 {
-                    public function readCell($column, $row, $worksheetName = '')
+                    public function readCell(string $column, int $row, string $worksheetName = ''): bool
                     {
                         // Assert read filter is being called.
                         // If assertion is not called, test will fail due to

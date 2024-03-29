@@ -40,7 +40,7 @@ class WithCustomValueBinderTest extends TestCase
             /**
              * {@inheritdoc}
              */
-            public function bindValue(Cell $cell, $value)
+            public function bindValue(Cell $cell, mixed $value): bool
             {
                 // Handle percentage
                 if (preg_match('/^\-?\d*\.?\d*\s?\%$/', $value)) {
@@ -66,9 +66,9 @@ class WithCustomValueBinderTest extends TestCase
                     );
 
                     $cell->getWorksheet()
-                         ->getStyle($cell->getCoordinate())
-                         ->getNumberFormat()
-                         ->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
+                        ->getStyle($cell->getCoordinate())
+                        ->getNumberFormat()
+                        ->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
 
                     return true;
                 }
@@ -102,7 +102,7 @@ class WithCustomValueBinderTest extends TestCase
             /**
              * {@inheritdoc}
              */
-            public function bindValue(Cell $cell, $value)
+            public function bindValue(Cell $cell, mixed $value): bool
             {
                 if ($cell->getCoordinate() === 'B2') {
                     $cell->setValueExplicit($value, DataType::TYPE_STRING);
