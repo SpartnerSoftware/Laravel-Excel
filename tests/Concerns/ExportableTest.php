@@ -81,6 +81,21 @@ class ExportableTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
     }
 
+    public function test_can_set_file_name_via_method()
+    {
+        $export   = new class
+        {
+            use Exportable;
+
+            private function getFileName()
+            {
+                return 'name.csv';
+            }
+        };
+        $response = $export->download();
+        $this->assertEquals('attachment; filename=name.csv', $response->headers->get('Content-Disposition'));
+    }
+
     public function test_can_have_customized_header()
     {
         $export   = new class
