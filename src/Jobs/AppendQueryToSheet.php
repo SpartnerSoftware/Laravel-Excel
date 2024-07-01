@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Ampeco\Modules\Tenants\TenantJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,7 +17,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendQueryToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue, HasEventBus;
+    use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue, HasEventBus, TenantJob;
 
     /**
      * @var TemporaryFile
@@ -64,6 +65,8 @@ class AppendQueryToSheet implements ShouldQueue
         int $page,
         int $chunkSize
     ) {
+        $this->captureTenant();
+
         $this->sheetExport   = $sheetExport;
         $this->temporaryFile = $temporaryFile;
         $this->writerType    = $writerType;
