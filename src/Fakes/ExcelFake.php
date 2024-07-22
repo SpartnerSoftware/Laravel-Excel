@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Reader;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ExcelFake implements Exporter, Importer
 {
+    use Macroable;
+
     /**
      * @var array
      */
