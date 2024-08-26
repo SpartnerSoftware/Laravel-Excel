@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Imports\Persistence;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 
@@ -58,8 +59,8 @@ class CascadePersistManager
                 }
             }
 
-            if ($relation instanceof BelongsToMany) {
-                if (!$this->persistBelongsToMany($relation, $models)) {
+            if ($relation instanceof BelongsToMany || $relation instanceof HasMany) {
+                if (!$this->persistToMany($relation, $models)) {
                     return false;
                 }
             }
@@ -98,7 +99,7 @@ class CascadePersistManager
      * @param  array  $models
      * @return bool
      */
-    private function persistBelongsToMany(BelongsToMany $relation, array $models): bool
+    private function persistToMany(BelongsToMany|HasMany $relation, array $models): bool
     {
         foreach ($models as $model) {
             $relation->save($model);
