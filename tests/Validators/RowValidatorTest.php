@@ -9,12 +9,12 @@ use Maatwebsite\Excel\Validators\RowValidator;
 class RowValidatorTest extends TestCase
 {
     /**
-     * The RowValidator instance
+     * The RowValidator instance.
      */
     protected $validator;
 
     /**
-     * Set up the test
+     * Set up the test.
      */
     public function setUp(): void
     {
@@ -80,7 +80,7 @@ class RowValidatorTest extends TestCase
     }
 
     /**
-     * Call a private function
+     * Call a private function.
      *
      * @param  string  $name
      * @param  array  $args
