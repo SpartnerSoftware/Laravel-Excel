@@ -84,7 +84,6 @@ class RowValidatorTest extends TestCase
      *
      * @param  string  $name
      * @param  array  $args
-     *
      * @return mixed
      */
     public function callPrivateMethod(string $name, array $args)
