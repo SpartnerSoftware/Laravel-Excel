@@ -144,6 +144,20 @@ class Writer
     }
 
     /**
+     * Determine if the application is running in a serverless environment.
+     * Shameless copy/paste from Livewire
+     *
+     * @return bool
+     */
+    public function isRunningServerless(): bool
+    {
+        return in_array($_ENV['SERVER_SOFTWARE'] ?? null, [
+            'vapor',
+            'bref',
+        ]);
+    }
+
+    /**
      * @param  object  $export
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
@@ -166,7 +180,7 @@ class Writer
             $export
         );
 
-        if ($temporaryFile instanceof RemoteTemporaryFile && !$temporaryFile->existsLocally() && !isset($_ENV['AWS_REQUEST_ID'])) {
+        if ($temporaryFile instanceof RemoteTemporaryFile && !$temporaryFile->existsLocally() && !$this->isRunningServerless()) {
             $temporaryFile = resolve(TemporaryFileFactory::class)
                 ->makeLocal(Arr::last(explode('/', $temporaryFile->getLocalPath())));
         }
