@@ -150,7 +150,7 @@ class Writer
      */
     public function isRunningServerless(): bool
     {
-        return is_null($_ENV['AWS_LAMBDA_RUNTIME_API']);
+        return isset($_ENV['AWS_LAMBDA_RUNTIME_API']);
     }
 
     /**
