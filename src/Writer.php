@@ -166,7 +166,7 @@ class Writer
             $export
         );
 
-        if ($temporaryFile instanceof RemoteTemporaryFile && !$temporaryFile->existsLocally()) {
+        if ($temporaryFile instanceof RemoteTemporaryFile && !$temporaryFile->existsLocally() && !isset($_ENV['AWS_REQUEST_ID'])) {
             $temporaryFile = resolve(TemporaryFileFactory::class)
                 ->makeLocal(Arr::last(explode('/', $temporaryFile->getLocalPath())));
         }
