@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -237,6 +239,16 @@ class ExcelTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/import.xlsx');
 
+        if (InstalledVersions::satisfies(new VersionParser, 'illuminate/support', '>=6.0')) {
+            $uploadedFile = UploadedFile::fake()->createWithContent('import.xlsx', $contents);
+        } else {
+            $uploadedFile = UploadedFile::fake()->create('import.xlsx');
+
+            $resource = fopen($uploadedFile->getRealPath(), 'w');
+
+            fwrite($resource, $contents);
+        }
+
         $this->assertEquals(
             new Collection([
                 new Collection([
@@ -244,7 +256,7 @@ class ExcelTest extends TestCase
                     new Collection(['test', 'test']),
                 ]),
             ]),
-            $import->toCollection(UploadedFile::fake()->createWithContent('import.xlsx', $contents), 'local')
+            $import->toCollection($uploadedFile, 'local')
         );
     }
 
