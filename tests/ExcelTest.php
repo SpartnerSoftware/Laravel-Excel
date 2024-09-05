@@ -228,6 +228,26 @@ class ExcelTest extends TestCase
         ]), $import->toCollection('import.xlsx'));
     }
 
+    public function test_can_import_a_simple_xlsx_file_to_collection_with_local_disk()
+    {
+        $import = new class
+        {
+            use Importable;
+        };
+
+        $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/import.xlsx');
+
+        $this->assertEquals(
+            new Collection([
+                new Collection([
+                    new Collection(['test', 'test']),
+                    new Collection(['test', 'test']),
+                ]),
+            ]),
+            $import->toCollection(UploadedFile::fake()->createWithContent('import.xlsx', $contents), 'local')
+        );
+    }
+
     public function test_can_import_a_simple_xlsx_file_to_collection_without_import_object()
     {
         $this->assertEquals(new Collection([
