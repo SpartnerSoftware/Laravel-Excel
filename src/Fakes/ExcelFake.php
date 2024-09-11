@@ -6,8 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Traits\Macroable;
+use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Reader;
@@ -102,6 +104,11 @@ class ExcelFake implements Exporter, Importer
 
         Queue::push($this->job);
 
+        // Check if the export class is batchable
+        if ($export instanceof ShouldBatch) {
+            return Bus::batch([$this->job]);
+        }
+
         return new PendingDispatch($this->job);
     }
 
@@ -122,7 +129,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|UploadedFile  $file
      * @param  string|null  $disk
      * @param  string|null  $readerType
-     * @return Reader|PendingDispatch
+     * @return Reader|PendingDispatch|\Illuminate\Bus\PendingBatch
      */
     public function import($import, $file, string $disk = null, string $readerType = null)
     {
@@ -174,7 +181,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|UploadedFile  $file
      * @param  string|null  $disk
      * @param  string  $readerType
-     * @return PendingDispatch
+     * @return PendingDispatch|\Illuminate\Bus\PendingBatch
      */
     public function queueImport(ShouldQueue $import, $file, string $disk = null, string $readerType = null)
     {
@@ -196,6 +203,11 @@ class ExcelFake implements Exporter, Importer
         };
 
         Queue::push($this->job);
+
+        // Check if the import class is batchable
+        if ($import instanceof ShouldBatch) {
+            return Bus::batch([$this->job]);
+        }
 
         return new PendingDispatch($this->job);
     }
