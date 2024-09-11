@@ -5,13 +5,14 @@ namespace Maatwebsite\Excel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
 
 class Excel implements Exporter, Importer
 {
-    use RegistersCustomConcerns;
+    use Macroable, RegistersCustomConcerns;
 
     const XLSX     = 'Xlsx';
 
