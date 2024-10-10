@@ -23,7 +23,7 @@ Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most re
 - Add support for ignoring PHP auto_detect_line_endings INI directive
 
 ### Fixed
-- Fix the PSR simple cache dependency mess to maintain backwards compatability and support 3.0 of the interface.
+- Fix the PSR simple cache dependency mess to maintain backwards compatibility and support 3.0 of the interface.
 
 ## [3.1.44] - 2022-10-14
 
@@ -89,7 +89,7 @@ Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most re
 - Support Laravel 9
 - Added a config setting to specify DB connection
 - Added a config setting to specify CSV output encoding
-- Added an ability to specify CSV ouput encoding through csvSettings
+- Added an ability to specify CSV output encoding through csvSettings
 
 ## [3.1.35] - 2022-01-04
 
@@ -136,7 +136,7 @@ Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most re
 
 ### Fixed
 
-- Create failures of rows than didn't exists but where requested in row
+- Create failures of rows than didn't exist but where requested in row
   validation
 - Fix Bug Formulas are not calculated when import implements
   WithCalculatedFormulas with SkipsEmptyRows #3127
