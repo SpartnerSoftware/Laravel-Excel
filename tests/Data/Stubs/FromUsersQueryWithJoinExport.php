@@ -41,6 +41,6 @@ class FromUsersQueryWithJoinExport implements FromQuery, WithCustomChunkSize
      */
     public function chunkSize(): int
     {
-        return 1000;
+        return 10;
     }
 }
