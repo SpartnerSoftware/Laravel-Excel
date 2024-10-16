@@ -472,7 +472,7 @@ class Sheet
             return;
         }
 
-        $query->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
+        $query->clone()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
             $this->appendRows($chunk, $sheetExport);
         });
     }
