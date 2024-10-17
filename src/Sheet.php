@@ -472,7 +472,11 @@ class Sheet
             return;
         }
 
-        $query->clone()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
+        //Operate on a clone to avoid altering the original
+        //and use the clone operator directly to support old versions of Laravel
+        //that don't have a clone method in eloquent
+        $clonedQuery = clone $query;
+        $clonedQuery->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
             $this->appendRows($chunk, $sheetExport);
         });
     }
