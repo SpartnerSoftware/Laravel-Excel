@@ -116,7 +116,12 @@ class WithLimitTest extends TestCase
              */
             public function array(array $array)
             {
-                Assert::assertCount(1, $array);
+                Assert::assertEquals([
+                    [
+                        'Patrick Brouwers',
+                        'patrick@maatwebsite.nl',
+                    ],
+                ], $array);
             }
 
             /**
