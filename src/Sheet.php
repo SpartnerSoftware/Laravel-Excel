@@ -392,11 +392,10 @@ class Sheet
      */
     public function close($sheetExport)
     {
-
         if ($sheetExport instanceof WithCharts) {
             $this->addCharts($sheetExport->charts());
         }
-        
+
         if ($sheetExport instanceof WithDrawings) {
             $this->addDrawings($sheetExport->drawings());
         }
