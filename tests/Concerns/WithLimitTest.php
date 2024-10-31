@@ -105,7 +105,7 @@ class WithLimitTest extends TestCase
         $import->import('import-users.xlsx');
     }
 
-    public function test_can_import_with_heading_row()
+    public function test_can_import_single_with_heading_row()
     {
         $import = new class implements ToArray, WithLimit, WithHeadingRow
         {
@@ -130,6 +130,41 @@ class WithLimitTest extends TestCase
             public function limit(): int
             {
                 return 1;
+            }
+        };
+
+        $import->import('import-users-with-headings.xlsx');
+    }
+
+    public function test_can_import_multiple_with_heading_row()
+    {
+        $import = new class implements ToArray, WithLimit, WithHeadingRow
+        {
+            use Importable;
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    [
+                        'Patrick Brouwers',
+                        'patrick@maatwebsite.nl',
+                    ],
+                    [
+                        'Taylor Otwell',
+                        'taylor@laravel.com',
+                    ],
+                ], $array);
+            }
+
+            /**
+             * @return int
+             */
+            public function limit(): int
+            {
+                return 2;
             }
         };
 
