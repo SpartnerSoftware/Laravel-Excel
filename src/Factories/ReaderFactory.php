@@ -81,7 +81,7 @@ class ReaderFactory
         try {
             return IOFactory::identify($temporaryFile->getLocalPath());
         } catch (Exception $e) {
-            throw new NoTypeDetectedException(null, null, $e);
+            throw new NoTypeDetectedException('', 0, $e);
         }
     }
 }
