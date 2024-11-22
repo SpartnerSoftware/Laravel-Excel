@@ -14,7 +14,7 @@ interface Importer
      * @param  string|null  $readerType
      * @return Reader|\Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function import($import, $filePath, string $disk = null, string $readerType = null);
+    public function import($import, $filePath, ?string $disk = null, ?string $readerType = null);
 
     /**
      * @param  object  $import
@@ -23,7 +23,7 @@ interface Importer
      * @param  string|null  $readerType
      * @return array
      */
-    public function toArray($import, $filePath, string $disk = null, string $readerType = null): array;
+    public function toArray($import, $filePath, ?string $disk = null, ?string $readerType = null): array;
 
     /**
      * @param  object  $import
@@ -32,7 +32,7 @@ interface Importer
      * @param  string|null  $readerType
      * @return Collection
      */
-    public function toCollection($import, $filePath, string $disk = null, string $readerType = null): Collection;
+    public function toCollection($import, $filePath, ?string $disk = null, ?string $readerType = null): Collection;
 
     /**
      * @param  ShouldQueue  $import
@@ -41,5 +41,5 @@ interface Importer
      * @param  string  $readerType
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function queueImport(ShouldQueue $import, $filePath, string $disk = null, string $readerType = null);
+    public function queueImport(ShouldQueue $import, $filePath, ?string $disk = null, ?string $readerType = null);
 }
