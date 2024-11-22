@@ -2,6 +2,9 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 interface Exporter
 {
     /**
@@ -22,7 +25,7 @@ interface Exporter
      * @param  string|null  $diskName
      * @param  string  $writerType
      * @param  mixed  $diskOptions
-     * @return bool
+     * @return bool|PendingDispatch
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception

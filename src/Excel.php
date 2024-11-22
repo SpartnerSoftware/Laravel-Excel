@@ -98,15 +98,15 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, ?string $diskName = null, ?string $writerType = null, array $diskOptions = []): bool|PendingDispatch
+    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): bool|PendingDispatch
     {
         if ($export instanceof ShouldQueue) {
-            return $this->queue($export, $filePath, $diskName, $writerType);
+            return $this->queue($export, $filePath, $disk, $writerType);
         }
 
         $temporaryFile = $this->export($export, $filePath, $writerType);
 
-        $exported = $this->filesystem->disk($diskName, $diskOptions)->copy(
+        $exported = $this->filesystem->disk($disk, $diskOptions)->copy(
             $temporaryFile,
             $filePath
         );
@@ -119,7 +119,7 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, array $diskOptions = []): PendingDispatch
+    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
@@ -147,16 +147,15 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function import($import, $file, ?string $disk = null, ?string $readerType = null): Reader|PendingDispatch
+    public function import($import, $file, ?string $disk = null, ?string $readerType = null)
     {
-        $readerType = FileTypeDetector::detect($file, $readerType);
         $response = $this->reader->read($import, $file, $readerType, $disk);
 
         if ($response instanceof PendingDispatch) {
             return $response;
         }
 
-        return $this->reader;
+        return $this;
     }
 
     /**
@@ -164,8 +163,6 @@ class Excel implements Exporter, Importer
      */
     public function toArray($import, $file, ?string $disk = null, ?string $readerType = null): array
     {
-        $readerType = FileTypeDetector::detect($file, $readerType);
-
         return $this->reader->toArray($import, $file, $readerType, $disk);
     }
 
@@ -174,8 +171,6 @@ class Excel implements Exporter, Importer
      */
     public function toCollection($import, $file, ?string $disk = null, ?string $readerType = null): Collection
     {
-        $readerType = FileTypeDetector::detect($file, $readerType);
-
         return $this->reader->toCollection($import, $file, $readerType, $disk);
     }
 
@@ -184,7 +179,7 @@ class Excel implements Exporter, Importer
      */
     public function queueImport(ShouldQueue $import, $file, ?string $disk = null, ?string $readerType = null): PendingDispatch
     {
-        return $this->import($import, $file, $disk, $readerType);
+        return $this->reader->read($import, $file, $readerType, $disk);
     }
 
     /**
