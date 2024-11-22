@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddGroupIdToUsersTable extends Migration
@@ -22,6 +23,9 @@ class AddGroupIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            if (DB::connection()->getDriverName() === 'sqlite') {
+                $table->dropIndex(['group_id']);
+            }
             $table->dropColumn('group_id');
         });
     }

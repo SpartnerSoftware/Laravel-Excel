@@ -88,12 +88,9 @@ class TestCase extends OrchestraTestCase
 
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'mysql',
-            'host'     => env('DB_HOST'),
-            'port'     => env('DB_PORT'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'foreign_key_constraints' => true,
         ]);
 
         $app['config']->set('view.paths', [
