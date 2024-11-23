@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.0, 8.1, 8.2, 8.3]
+        php: [7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
         laravel: [11, 10, 9, 8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
@@ -60,7 +60,11 @@ jobs:
             php: 8.0
           - laravel: 10
             php: 7.4
+          - laravel: 10
+            php: 8.4
           - laravel: 9
+            php: 7.4
+          - laravel: 8.4
             php: 7.4
           - laravel: 7
             php: 8.0
@@ -70,6 +74,8 @@ jobs:
             php: 8.2
           - laravel: 7
             php: 8.3
+          - laravel: 7
+            php: 8.4
           - laravel: 6
             php: 8.0
           - laravel: 6
@@ -78,6 +84,8 @@ jobs:
             php: 8.2
           - laravel: 6
             php: 8.3
+          - laravel: 6
+            php: 8.4
           - laravel: 5.8
             php: 8.0
           - laravel: 5.8
@@ -85,7 +93,9 @@ jobs:
           - laravel: 5.8
             php: 8.2
           - laravel: 5.8
-            php: 8.3 
+            php: 8.3
+          - laravel: 5.8
+            php: 8.4 
 
     name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
