@@ -64,8 +64,10 @@ jobs:
             php: 8.4
           - laravel: 9
             php: 7.4
-          - laravel: 8.4
-            php: 7.4
+          - laravel: 9
+            php: 8.4
+          - laravel: 8
+            php: 8.4
           - laravel: 7
             php: 8.0
           - laravel: 7
