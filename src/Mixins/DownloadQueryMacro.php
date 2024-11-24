@@ -12,7 +12,7 @@ class DownloadQueryMacro
 {
     public function __invoke()
     {
-        return function (string $fileName, string $writerType = null, $withHeadings = false) {
+        return function (string $fileName, ?string $writerType = null, $withHeadings = false) {
             $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
             {
                 use Exportable;

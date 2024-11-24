@@ -27,7 +27,7 @@ class ReaderFactory
      *
      * @throws Exception
      */
-    public static function make($import, TemporaryFile $file, string $readerType = null): IReader
+    public static function make($import, TemporaryFile $file, ?string $readerType = null): IReader
     {
         $reader = IOFactory::createReader(
             $readerType ?: static::identify($file)

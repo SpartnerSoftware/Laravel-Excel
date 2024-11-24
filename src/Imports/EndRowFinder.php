@@ -12,7 +12,7 @@ class EndRowFinder
      * @param  int|null  $highestRow
      * @return int|null
      */
-    public static function find($import, int $startRow = null, int $highestRow = null)
+    public static function find($import, ?int $startRow = null, ?int $highestRow = null)
     {
         if (!$import instanceof WithLimit) {
             return null;

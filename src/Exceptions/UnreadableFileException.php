@@ -15,7 +15,7 @@ class UnreadableFileException extends Exception implements LaravelExcelException
     public function __construct(
         $message = 'File could not be read',
         $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

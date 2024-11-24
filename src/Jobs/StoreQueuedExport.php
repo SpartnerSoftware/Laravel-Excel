@@ -36,7 +36,7 @@ class StoreQueuedExport implements ShouldQueue
      * @param  string|null  $disk
      * @param  array|string  $diskOptions
      */
-    public function __construct(TemporaryFile $temporaryFile, string $filePath, string $disk = null, $diskOptions = [])
+    public function __construct(TemporaryFile $temporaryFile, string $filePath, ?string $disk = null, $diskOptions = [])
     {
         $this->disk          = $disk;
         $this->filePath      = $filePath;

@@ -10,7 +10,7 @@ class ImportAsMacro
 {
     public function __invoke()
     {
-        return function (string $filename, callable $mapping, string $disk = null, string $readerType = null) {
+        return function (string $filename, callable $mapping, ?string $disk = null, ?string $readerType = null) {
             $import = new class(get_class($this->getModel()), $mapping) implements ToModel
             {
                 use Importable;

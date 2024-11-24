@@ -58,7 +58,7 @@ class QueuedWriter
      * @param  array|string  $diskOptions
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
     {
         $extension     = pathinfo($filePath, PATHINFO_EXTENSION);
         $temporaryFile = $this->temporaryFileFactory->make($extension);

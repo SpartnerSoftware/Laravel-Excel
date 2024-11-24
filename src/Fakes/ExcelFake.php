@@ -57,7 +57,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function download($export, string $fileName, string $writerType = null, array $headers = [])
+    public function download($export, string $fileName, ?string $writerType = null, array $headers = [])
     {
         $this->downloads[$fileName] = $export;
 
@@ -69,7 +69,7 @@ class ExcelFake implements Exporter, Importer
      *
      * @param  string|null  $diskName  Fallback for usage with named properties
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], string $diskName = null)
+    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [], ?string $diskName = null)
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $disk ?: $diskName, $writerType);
@@ -83,7 +83,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
     {
         Queue::fake();
 
@@ -124,7 +124,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|null  $readerType
      * @return Reader|PendingDispatch
      */
-    public function import($import, $file, string $disk = null, string $readerType = null)
+    public function import($import, $file, ?string $disk = null, ?string $readerType = null)
     {
         if ($import instanceof ShouldQueue) {
             return $this->queueImport($import, $file, $disk, $readerType);
@@ -144,7 +144,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|null  $readerType
      * @return array
      */
-    public function toArray($import, $file, string $disk = null, string $readerType = null): array
+    public function toArray($import, $file, ?string $disk = null, ?string $readerType = null): array
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
@@ -160,7 +160,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|null  $readerType
      * @return Collection
      */
-    public function toCollection($import, $file, string $disk = null, string $readerType = null): Collection
+    public function toCollection($import, $file, ?string $disk = null, ?string $readerType = null): Collection
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
@@ -176,7 +176,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string  $readerType
      * @return PendingDispatch
      */
-    public function queueImport(ShouldQueue $import, $file, string $disk = null, string $readerType = null)
+    public function queueImport(ShouldQueue $import, $file, ?string $disk = null, ?string $readerType = null)
     {
         Queue::fake();
 

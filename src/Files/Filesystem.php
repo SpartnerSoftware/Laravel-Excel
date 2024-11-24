@@ -24,7 +24,7 @@ class Filesystem
      * @param  array  $diskOptions
      * @return Disk
      */
-    public function disk(string $disk = null, array $diskOptions = []): Disk
+    public function disk(?string $disk = null, array $diskOptions = []): Disk
     {
         return new Disk(
             $this->filesystem->disk($disk),

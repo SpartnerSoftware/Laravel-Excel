@@ -203,7 +203,7 @@ class Writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function addNewSheet(int $sheetIndex = null)
+    public function addNewSheet(?int $sheetIndex = null)
     {
         return new Sheet($this->spreadsheet->createSheet($sheetIndex));
     }

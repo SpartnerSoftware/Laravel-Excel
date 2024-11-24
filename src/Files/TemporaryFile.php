@@ -50,7 +50,7 @@ abstract class TemporaryFile
      * @param  string|null  $disk
      * @return TemporaryFile
      */
-    public function copyFrom($filePath, string $disk = null): TemporaryFile
+    public function copyFrom($filePath, ?string $disk = null): TemporaryFile
     {
         if ($filePath instanceof UploadedFile) {
             $readStream = fopen($filePath->getRealPath(), 'rb');

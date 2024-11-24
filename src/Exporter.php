@@ -14,7 +14,7 @@ interface Exporter
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function download($export, string $fileName, string $writerType = null, array $headers = []);
+    public function download($export, string $fileName, ?string $writerType = null, array $headers = []);
 
     /**
      * @param  object  $export
@@ -27,7 +27,7 @@ interface Exporter
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
+    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []);
 
     /**
      * @param  object  $export
@@ -37,7 +37,7 @@ interface Exporter
      * @param  mixed  $diskOptions
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
+    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []);
 
     /**
      * @param  object  $export

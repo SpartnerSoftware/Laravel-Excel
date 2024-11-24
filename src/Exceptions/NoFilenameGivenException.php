@@ -15,7 +15,7 @@ class NoFilenameGivenException extends InvalidArgumentException implements Larav
     public function __construct(
         $message = 'A filename needs to be passed in order to download the export',
         $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }
