@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -102,6 +103,72 @@ class WithLimitTest extends TestCase
         };
 
         $import->import('import-users.xlsx');
+    }
+
+    public function test_can_import_single_with_heading_row()
+    {
+        $import = new class implements ToArray, WithLimit, WithHeadingRow
+        {
+            use Importable;
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    [
+                        'Patrick Brouwers',
+                        'patrick@maatwebsite.nl',
+                    ],
+                ], $array);
+            }
+
+            /**
+             * @return int
+             */
+            public function limit(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-users-with-headings.xlsx');
+    }
+
+    public function test_can_import_multiple_with_heading_row()
+    {
+        $import = new class implements ToArray, WithLimit, WithHeadingRow
+        {
+            use Importable;
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    [
+                        'Patrick Brouwers',
+                        'patrick@maatwebsite.nl',
+                    ],
+                    [
+                        'Taylor Otwell',
+                        'taylor@laravel.com',
+                    ],
+                ], $array);
+            }
+
+            /**
+             * @return int
+             */
+            public function limit(): int
+            {
+                return 2;
+            }
+        };
+
+        $import->import('import-users-with-headings.xlsx');
     }
 
     public function test_can_set_limit_bigger_than_row_size()

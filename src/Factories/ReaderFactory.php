@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Factories;
 
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithReadFilter;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -61,8 +62,16 @@ class ReaderFactory
         if ($import instanceof WithReadFilter) {
             $reader->setReadFilter($import->readFilter());
         } elseif ($import instanceof WithLimit) {
+            $startRow = 1;
+
+            if ($import instanceof WithStartRow) {
+                $startRow = $import->startRow();
+            } elseif ($import instanceof WithHeadingRow) {
+                $startRow = 2;
+            }
+
             $reader->setReadFilter(new LimitFilter(
-                $import instanceof WithStartRow ? $import->startRow() : 1,
+                $startRow,
                 $import->limit()
             ));
         }
