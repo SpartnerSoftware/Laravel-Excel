@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\BatchableTrait;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
@@ -13,7 +14,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendViewToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable, InteractsWithQueue;
+    use BatchableTrait, Queueable, Dispatchable, InteractsWithQueue;
 
     /**
      * @var TemporaryFile
@@ -68,6 +69,11 @@ class AppendViewToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
+        // Determine if the batch has been cancelled...
+        if ($this->batchCancelled()) {
+            return;
+        }
+
         (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
             $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 

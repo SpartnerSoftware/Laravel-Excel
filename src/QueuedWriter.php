@@ -4,10 +4,12 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -56,7 +58,7 @@ class QueuedWriter
      * @param  string  $disk
      * @param  string|null  $writerType
      * @param  array|string  $diskOptions
-     * @return \Illuminate\Foundation\Bus\PendingDispatch
+     * @return PendingDispatch|Illuminate\Bus\PendingBatch
      */
     public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
     {
@@ -65,6 +67,8 @@ class QueuedWriter
 
         $jobs = $this->buildExportJobs($export, $temporaryFile, $writerType);
 
+        $queueExportJob = new QueueExport($export, $temporaryFile, $writerType);
+
         $jobs->push(new StoreQueuedExport(
             $temporaryFile,
             $filePath,
@@ -72,8 +76,16 @@ class QueuedWriter
             $diskOptions
         ));
 
+        // Check if the export class is batchable
+        if ($export instanceof ShouldBatch) {
+            return Bus::batch([
+                $jobs->prepend($queueExportJob)
+                    ->toArray(),
+            ]);
+        }
+
         return new PendingDispatch(
-            (new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
+            $queueExportJob->chain($jobs->toArray())
         );
     }
 

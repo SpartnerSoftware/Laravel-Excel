@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
@@ -15,6 +16,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
+use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Throwable;
 
@@ -27,6 +29,21 @@ class QueuedExportTest extends TestCase
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
         ]);
+    }
+
+    public function test_can_batch_an_export()
+    {
+        if (!class_exists(\Illuminate\Bus\Batchable::class)) {
+            $this->markTestSkipped('Batch jobs are not supported in this version of Laravel.');
+        }
+
+        $export = new ShouldBatchExport();
+
+        $batch = $export->queue('batch-export.xlsx', 'test')->name('batch-export-name');
+
+        $this->assertInstanceOf(PendingBatch::class, $batch);
+        $this->assertEquals('batch-export-name', $batch->name);
+        $this->assertCount(1, $batch->jobs);
     }
 
     public function test_can_queue_an_export_and_store_on_different_disk()
