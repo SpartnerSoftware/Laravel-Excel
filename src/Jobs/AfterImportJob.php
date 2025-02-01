@@ -4,8 +4,10 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\BatchableTrait;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\HasEventBus;
@@ -14,7 +16,7 @@ use Throwable;
 
 class AfterImportJob implements ShouldQueue
 {
-    use HasEventBus, InteractsWithQueue, Queueable;
+    use BatchableTrait, HasEventBus, InteractsWithQueue, Queueable, Dispatchable;
 
     /**
      * @var WithEvents
@@ -57,6 +59,11 @@ class AfterImportJob implements ShouldQueue
 
     public function handle()
     {
+        // Determine if the batch has been cancelled...
+        if ($this->batchCancelled()) {
+            return;
+        }
+
         foreach ($this->dependencyIds as $id) {
             if (!ReadChunk::isComplete($id)) {
                 // Until there is no jobs left to run we put this job back into the queue every minute

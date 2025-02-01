@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Concerns\BatchableTrait;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -24,7 +25,7 @@ use Throwable;
 
 class ReadChunk implements ShouldQueue
 {
-    use Queueable, HasEventBus, InteractsWithQueue;
+    use BatchableTrait, Queueable, HasEventBus, InteractsWithQueue;
 
     /**
      * @var int
@@ -165,6 +166,11 @@ class ReadChunk implements ShouldQueue
      */
     public function handle(TransactionHandler $transaction)
     {
+        // Determine if the batch has been cancelled...
+        if ($this->batchCancelled()) {
+            return;
+        }
+
         if (method_exists($this->import, 'setChunkOffset')) {
             $this->import->setChunkOffset($this->startRow);
         }

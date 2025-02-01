@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\BatchableTrait;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterChunk;
@@ -16,7 +17,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendQueryToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue, HasEventBus;
+    use BatchableTrait, Queueable, Dispatchable, ProxyFailures, InteractsWithQueue, HasEventBus;
 
     /**
      * @var TemporaryFile
@@ -90,6 +91,11 @@ class AppendQueryToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
+        // Determine if the batch has been cancelled...
+        if ($this->batchCancelled()) {
+            return;
+        }
+
         (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
             if ($this->sheetExport instanceof WithEvents) {
                 $this->registerListeners($this->sheetExport->registerEvents());
